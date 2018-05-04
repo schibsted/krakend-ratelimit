@@ -1,10 +1,9 @@
-package gin
+package ratelimit
 
 import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tgracchus/krakend-ratelimit"
 	"github.com/tgracchus/krakend-ratelimit/rate_limit"
 	"github.com/tomasen/realip"
 

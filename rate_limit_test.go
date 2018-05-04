@@ -1,8 +1,9 @@
-package gin
+package ratelimit
 
 import (
-	"github.com/gin-gonic/gin"
 	"testing"
+
+	"github.com/gin-gonic/gin"
 )
 
 func TestReadContextKey(t *testing.T) {

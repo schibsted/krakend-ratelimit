@@ -10,3 +10,8 @@ type RateLimitSettings struct {
 	MaxRequests int `mapstructure:"max_requests"`
 	BurstSize   int `mapstructure:"burst_size"`
 }
+
+type RateLimiterSettings struct {
+	reqsMinute int
+	burstSize  int
+}

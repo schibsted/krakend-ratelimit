@@ -2,11 +2,6 @@ package ratelimit
 
 import "gopkg.in/throttled/throttled.v2"
 
-type RateLimiterSettings struct {
-	reqsMinute int
-	burstSize  int
-}
-
 type UpdatableRateLimiter interface {
 	Update(settings RateLimiterSettings) error
 	RateLimit(key string, quantity int) (bool, throttled.RateLimitResult, error)

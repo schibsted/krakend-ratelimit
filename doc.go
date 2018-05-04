@@ -33,7 +33,7 @@
 //
 //     config := apigw_config.NewGatewayConfig(...)
 //     nodes := 3
-//     rateLimiter := rate_limit.BuildRateLimiter(config, nodes)
+//     rateLimiter := BuildRateLimiter(config, nodes)
 //
 //     issuer := "www.mysite.com"
 //     weight := 1

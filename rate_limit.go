@@ -2,13 +2,16 @@ package gin
 
 import (
 	"errors"
+
 	"github.com/gin-gonic/gin"
+	"github.com/tgracchus/krakend-ratelimit"
+	"github.com/tgracchus/krakend-ratelimit/rate_limit"
 	"github.com/tomasen/realip"
-	gconfig "github.schibsted.io/spt-infrastructure/apigw-krakend/config"
-	"github.schibsted.io/spt-infrastructure/apigw-krakend/rate_limit"
+
+	throttled "gopkg.in/throttled/throttled.v2"
 
 	"github.com/devopsfaith/krakend/logging"
-	"gopkg.in/throttled/throttled.v2"
+
 	"math"
 	"net/http"
 	"strconv"

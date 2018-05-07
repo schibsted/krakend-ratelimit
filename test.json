@@ -1,0 +1,35 @@
+{
+  "extra_config": {
+    "github.com/tgracchus/krakend-ratelimit": {
+      "enabled": true,
+      "default": {
+        "max_requests": 600,
+        "burst_size": 5
+      }
+    }
+  },
+  "version": 2,
+  "max_idle_connections": 250,
+  "timeout": "3000ms",
+  "read_timeout": "0s",
+  "write_timeout": "0s",
+  "idle_timeout": "0s",
+  "read_header_timeout": "0s",
+  "name": "Test",
+  "endpoints": [
+    {
+      "endpoint": "/hello",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/hello",
+          "host": [
+            "http://localhost:8000"
+          ]
+        }
+      ],
+      "timeout": "1500ms",
+      "max_rate": "10000"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
-package rate_limit
+package ratelimit
 
-import "gopkg.in/throttled/throttled.v2"
+import "github.com/throttled/throttled"
 
 // Allows different GinRateLimit settings per siteKey (issuer)
 //  implements UpdatableClusterRateLimiter (so it's cluster

@@ -6,8 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tomasen/realip"
 
-	throttled "gopkg.in/throttled/throttled.v2"
+	"github.com/throttled/throttled"
 
+	"github.com/devopsfaith/krakend/config"
 	"github.com/devopsfaith/krakend/logging"
 
 	"math"
@@ -16,12 +17,48 @@ import (
 	"time"
 )
 
+// Namespace is the key to look for extra configuration details
+const Namespace = "github.com/tgracchus/krakend-ratelimit"
+
+// ConfigGetter implements the config.ConfigGetter interface
+func ConfigGetter(e config.ExtraConfig) interface{} {
+	v, ok := e[Namespace]
+	if !ok {
+		return nil
+	}
+	tmp, ok := v.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+	cfg := RateLimitConfig{}
+	if val, ok := tmp["enabled"]; ok {
+		cfg.Enabled = val.(bool)
+	}
+
+	if val, ok := tmp["default"]; ok {
+		defaults, ok := val.(map[string]interface{})
+		if !ok {
+			return nil
+		}
+		settings := RateLimitSettings{}
+		if val, ok := defaults["max_requests"]; ok {
+			settings.MaxRequests = int(val.(float64))
+		}
+		if val, ok := defaults["burst_size"]; ok {
+			settings.BurstSize = int(val.(float64))
+		}
+		cfg.Default = settings
+	}
+
+	return cfg
+}
+
 var (
 	rateLimiterUpdateRate = 10 * time.Second
 )
 
-func GinRateLimit(cfg *gconfig.VirtualHostConfig, nodeCounter NodeCounter, logger logging.Logger) (UpdatableClusterRateLimiter, error) {
-	rateLimiter := BuildRateLimiter(cfg.RateLimit, nodeCounter, logger)
+func GinRateLimit(cfg RateLimitConfig, nodeCounter NodeCounter, logger logging.Logger) (UpdatableClusterRateLimiter, error) {
+	rateLimiter := BuildRateLimiter(cfg, nodeCounter, logger)
 	go RateLimitUpdater(rateLimiter, rateLimiterUpdateRate, nodeCounter, logger)
 
 	return rateLimiter, nil

@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/devopsfaith/krakend/logging"
+	"github.com/throttled/throttled"
+	"github.com/throttled/throttled/store/memstore"
 )
 
 type NodeCounter func() int
@@ -49,4 +51,26 @@ func getRLSettings(s RateLimitSettings) RateLimiterSettings {
 		reqsMinute: s.MaxRequests,
 		burstSize:  s.BurstSize,
 	}
+}
+
+type RateLimiterFactory interface {
+	Build(reqsMinute int, burstSize int) (throttled.RateLimiter, error)
+}
+
+type InMemoryGCRARateLimiterFactory struct{}
+
+func (f InMemoryGCRARateLimiterFactory) Build(reqsMinute int, burstSize int) (throttled.RateLimiter, error) {
+	// Use in-memory storage
+	maxKeys := 0 // no LRU (no keys limit)
+	store, err := memstore.New(maxKeys)
+	if err != nil {
+		return nil, err
+	}
+
+	quota := throttled.RateQuota{throttled.PerMin(reqsMinute), burstSize}
+	rateLimiter, err := throttled.NewGCRARateLimiter(store, quota)
+	if err != nil {
+		return nil, err
+	}
+	return rateLimiter, nil
 }

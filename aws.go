@@ -1,3 +1,8 @@
+//
+// Copyright 2011 - 2018 Schibsted Products & Technology AS.
+// Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+//
+
 package ratelimit
 
 import (
@@ -14,6 +19,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2/ec2iface"
 )
 
+//Node counter for amazon EC2
 func NewAwsNodeCounter(EC2 *EC2, autoScaling *AutoScaling,
 	iid *ec2metadata.EC2InstanceIdentityDocument, logger logging.Logger) NodeCounter {
 	lastNumber := 3

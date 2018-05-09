@@ -12,7 +12,7 @@ The configuration should be added in the service extra_config.
 ```yml
 {
   "extra_config": {
-    "github.com/tgracchus/krakend-ratelimit": {
+    "github.com/schibsted/krakend-ratelimit": {
       "enabled": true,
       "default": {
         "max_requests": 600,

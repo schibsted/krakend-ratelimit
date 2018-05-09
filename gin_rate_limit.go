@@ -23,7 +23,7 @@ import (
 )
 
 // Namespace is the key to look for extra configuration details
-const Namespace = "github.com/tgracchus/krakend-ratelimit"
+const Namespace = "github.com/schibsted/krakend-ratelimit"
 
 // ConfigGetter implements the config.ConfigGetter interface
 func ConfigGetter(e config.ExtraConfig) interface{} {
